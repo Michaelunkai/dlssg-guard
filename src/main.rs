@@ -339,6 +339,9 @@ fn apply(s: &Scan) -> (usize, usize) {
     let (mut ok, mut bad) = (0, 0);
     let n = s.live.len();
     for (i, p) in s.live.iter().enumerate() {
+        if !p.exists() {
+            continue; // another process (e.g. a manual fix) already handled it
+        }
         match disable_one(p) {
             Ok(_) => {
                 say!("[{}/{}] disabled  {}", i + 1, n, p.display());
